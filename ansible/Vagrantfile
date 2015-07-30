@@ -1,0 +1,64 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+def which(cmd)
+    exts = ENV['PATHEXT'] ? ENV['PATHEXT'].split(';') : ['']
+    ENV['PATH'].split(File::PATH_SEPARATOR).each do |path|
+        exts.each { |ext|
+            exe = File.join(path, "#{cmd}#{ext}")
+            return exe if File.executable? exe
+        }
+    end
+    return nil
+end
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  # Every Vagrant virtual environment requires a box to build off of.
+  config.vm.box = "puphpet/ubuntu1404-x64"
+  config.vm.hostname = "symfony"
+  if Vagrant.has_plugin?("vagrant-hostsupdater")
+    config.hostsupdater.aliases = ["symfony.local"]
+  else
+    puts "installing vagrant-hostsupdater plugin is recommended"
+  end
+
+  config.ssh.insert_key = true
+
+  is_windows = Vagrant::Util::Platform.windows?
+  if is_windows
+    config.vm.synced_folder "../", "/vagrant", type: "nfs", mount_options: ['rw', 'vers=3', 'tcp', 'fsc' ,'actimeo=2']
+  else
+    config.vm.synced_folder "../", "/vagrant", type: "nfs", mount_options: ['rw', 'vers=3', 'tcp', 'fsc' ,'actimeo=2']
+  end
+
+
+  # VMWare Workstation
+  config.vm.provider "vmware_workstation" do |v, override|
+    override.vm.network "private_network", ip: "113.0.0.13"
+    v.memory = 2048
+    v.name = "symfony"
+    v.vmx["sharedFolder0.followSymlinks"] = "TRUE"
+  end
+
+  # VirtualBox
+  config.vm.provider "virtualbox" do |v, override|
+    override.vm.network "private_network", ip: "192.168.33.10"
+    v.memory = 1024
+    v.name = "symfony"
+  end
+
+  #Ansible provisioning
+  if which('ansible-playbook')
+    config.vm.provision "ansible" do |ansible|
+      ansible.playbook = "playbook.yml"
+      ansible.inventory_path = "inventories/dev"
+      ansible.groups = {
+        "vagrant" => ["default"]
+      }
+    end
+  else
+    config.vm.provision :shell, path: "./windows.sh", args: ["default"]
+  end
+end

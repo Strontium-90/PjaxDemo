@@ -1,0 +1,12 @@
+---
+- hosts: vagrant
+  vars_files:
+    - vars.yml
+  roles:
+    - server
+    - vagrant_local
+    - nginx
+    - php
+    - composer
+    - java
+    - app

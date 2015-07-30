@@ -1,0 +1,35 @@
+---
+- name: Install php5
+  sudo: yes
+  apt: pkg=php5 state=latest
+
+- name: Install php5-fpm
+  sudo: yes
+  apt: pkg=php5-fpm state=latest
+
+- name: Install PHP Packages
+  sudo: yes
+  apt: pkg={{ item }} state=latest
+  with_items: php.packages
+  when: php.packages is defined
+
+#Configure
+- stat: path=/etc/php5/apache2/php.ini
+  register: modphp
+
+- stat: path=/etc/php5/fpm/php.ini
+  register: phpfpm
+
+- stat: path=/etc/php5/cli/php.ini
+  register: phpcli
+
+- include: php-fpm.yml
+
+- include: php-cli.yml
+  when: phpcli.stat.exists
+
+#- include: mod-php.yml
+#  when: modphp.stat.exists
+
+- include: pecl.yml
+- include: xdebug.yml

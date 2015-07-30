@@ -1,0 +1,21 @@
+{% extends pjax_frame() %}
+
+{% block title -%}Messages{%- endblock %}
+
+{% block body %}
+    <ol>
+        {% for message in messages %}
+            <li>
+                {{ message.text }} - {{ message.value }}
+                <a href="{{ path('pjax_message_show', {id: message.id}) }}" class="btn btn-default">show</a>
+                <a href="{{ path('pjax_message_edit', {id: message.id}) }}" class="btn btn-default">edit</a>
+                <a href="{{ path('pjax_message_edit', {id: message.id}) }}"
+                   class="btn btn-default" {{ pjax_attr('modal', 'main')|to_attr }}>edit in modal</a>
+                <form action="{{ path('pjax_message_delete', {id: message.id}) }}" method="post">
+                    <input type="hidden" name="_method" value="DELETE"/>
+                             <button type="submit" class="btn btn-danger">Удалить</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ol>
+{% endblock %}

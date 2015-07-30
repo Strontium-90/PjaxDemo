@@ -1,0 +1,19 @@
+{% block body %}
+    {% block modal_pre_body %}
+        {{ form_start(form) }}
+    {% endblock %}
+
+    {% block modal_body %}
+        {{ form_errors(form) }}
+        {{ form_row(form.text) }}
+        {{ form_row(form.value) }}
+    {% endblock %}
+
+    {% block modal_footer %}
+        <button type="submit" class="btn btn-primary">Создать</button>
+    {% endblock %}
+
+    {% block modal_post_footer %}
+        {{ form_end(form) }}
+    {% endblock %}
+{% endblock %}

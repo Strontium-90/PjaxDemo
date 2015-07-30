@@ -1,0 +1,48 @@
+pjax_message_index:
+    path: /messages
+    methods: [GET]
+    defaults:
+        _controller: pjax.controller.message:indexAction
+        _sylius:
+            paginate: 100
+
+pjax_message_new:
+    pattern: /messages/new
+    methods: [GET]
+    defaults:
+        _controller: pjax.controller.message:newAction
+
+pjax_message_show:
+     pattern: /messages/{id}
+     methods: [GET]
+     defaults:
+         _controller: pjax.controller.message:showAction
+
+pjax_message_create:
+    pattern: /messages
+    methods: [POST]
+    defaults:
+        _controller: pjax.controller.message:createAction
+        _sylius:
+            redirect: pjax_message_index
+
+pjax_message_edit:
+    pattern: /messages/{id}/edit
+    methods: [GET]
+    defaults:
+        _controller: pjax.controller.message:editAction
+
+pjax_message_update:
+    pattern: /messages/{id}
+    methods: [PUT, PATCH]
+    defaults:
+        _controller: pjax.controller.message:updateAction
+        _sylius:
+            redirect: pjax_message_index
+
+pjax_message_delete:
+    pattern: /messages/{id}
+    methods: [DELETE]
+    defaults:
+        _controller: pjax.controller.message:deleteAction
+

@@ -1,0 +1,15 @@
+services:
+    pjax.menu_builder:
+        class: Strontium\PjaxDemoBundle\Menu\MenuBuilder
+        arguments:
+            - @knp_menu.factory
+            - @pjax.repository.message
+
+    pjax.menu.main:
+        class: Knp\Menu\MenuItem
+        factory_service: pjax.menu_builder
+        factory_method: createMainMenu
+        arguments: [@request]
+        scope: request
+        tags:
+            - { name: knp_menu.menu, alias: main }

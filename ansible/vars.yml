@@ -1,0 +1,53 @@
+---
+servername: symfony.local
+webroot: /vagrant/web
+application_name: app
+
+server:
+    install: '1'
+    packages:
+      - mc
+      - npm
+
+    timezone: Europe/Moscow
+    locale: ru_RU.UTF-8
+vagrant_local:
+    install: '1'
+    vm:
+        base_box: trusty64
+        hostname: default
+        ip: 192.168.33.99
+        memory: '512'
+        sharedfolder: ./
+        enableWindows: '1'
+        useVagrantCloud: '1'
+        syncType: nfs
+apache:
+    install: '1'
+    docroot: "{{ webroot }}"
+    servername: "{{ servername }}"
+nginx:
+    install: '1'
+    docroot: "{{ webroot }}"
+    servername: "{{ servername }}"
+php:
+    install: '1'
+    packages:
+        - php5-cli
+        - php5-intl
+        - php5-mcrypt
+        - php5-curl
+        - php5-gd
+        - php5-mysql
+        - php5-dev
+        - php5-imagick
+        - php5-xsl
+        - php-pear
+        - php-soap
+        - php-http
+        - php-apc
+    peclpackages: [APC, APCu]
+    max_execution_time: 30000
+    memory_limit: 512M
+    upload_max_filesize: 32M
+

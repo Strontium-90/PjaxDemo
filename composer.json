@@ -1,0 +1,215 @@
+{
+    "name":              "symfony/framework-standard-edition",
+    "license":           "MIT",
+    "type":              "project",
+    "description":       "The \"Symfony Standard Edition\" distribution",
+    "autoload":          {
+        "psr-4": {
+            "":                  "src/",
+            "SymfonyStandard\\": "app/SymfonyStandard/"
+        }
+    },
+    "require":           {
+        "php":                                  ">=5.3.9",
+        "symfony/symfony":                      "2.7.*",
+        "doctrine/orm":                         "~2.2,>=2.2.3,<2.5",
+        "doctrine/dbal":                        "<2.5",
+        "doctrine/doctrine-bundle":             "~1.4",
+        "symfony/assetic-bundle":               "~2.3",
+        "symfony/swiftmailer-bundle":           "~2.3",
+        "symfony/monolog-bundle":               "~2.4",
+        "sensio/distribution-bundle":           "~4.0",
+        "sensio/framework-extra-bundle":        "~3.0,>=3.0.2",
+        "incenteev/composer-parameter-handler": "~2.0",
+        "nervo/yuicompressor":                  "dev-master",
+        "knplabs/knp-menu-bundle":              "~2.0",
+        "mopa/bootstrap-bundle":                "~3.0",
+        "friendsofsymfony/jsrouting-bundle":    "1.5@dev",
+        "twbs/bootstrap":                       "~3.0",
+        "strontium/symfony-vagrant":            "0.2.*@dev",
+        "sylius/sylius":                        "0.15.*@dev",
+        "friendsofsymfony/rest-bundle":         "~1.5",
+        "jms/serializer-bundle":                "~0.13",
+        "white-october/pagerfanta-bundle":      "~1.0",
+        "willdurand/hateoas-bundle":            "~0.4",
+        "components/jquery-pjax":               "1.0.0",
+        "components/cookies":                   "*"
+    },
+    "require-dev":       {
+        "sensio/generator-bundle":  "~2.3",
+        "phpunit/phpunit":          "~4.5",
+        "phpspec/prophecy-phpunit": "~1.1"
+    },
+    "scripts":           {
+        "post-root-package-install": [
+            "SymfonyStandard\\Composer::hookRootPackageInstall"
+        ],
+        "post-install-cmd":          [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget",
+            "Strontium\\SymfonyVagrant\\Composer\\ScriptHandler::cacheWarmupOnVagrant"
+        ],
+        "post-update-cmd":           [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget",
+            "Strontium\\SymfonyVagrant\\Composer\\ScriptHandler::cacheWarmupOnVagrant"
+        ]
+    },
+    "config":            {
+        "bin-dir":           "bin",
+        "component-dir":     "./web/components",
+        "component-baseurl": "/components"
+    },
+    "minimum-stability": "dev",
+    "extra":             {
+        "symfony-app-dir":        "app",
+        "symfony-web-dir":        "web",
+        "symfony-assets-install": "symlink",
+        "incenteev-parameters":   {
+            "file": "app/config/parameters.yml"
+        },
+        "branch-alias":           {
+            "dev-master": "2.7-dev"
+        }
+    },
+    "repositories":      [
+        {
+            "type":    "package",
+            "package": {
+                "name":    "components/jquery-pjax",
+                "type":    "component",
+                "version": "1.0.0",
+                "source":  {
+                    "url":       "https://github.com/Strontium-90/jquery-pjax.git",
+                    "type":      "git",
+                    "reference": "master"
+                },
+                "extra":   {
+                    "name":      "pjax",
+                    "component": {
+                        "scripts": [
+                            "./jquery.pjax.js"
+                        ]
+                    }
+                },
+                "require": {
+                    "robloach/component-installer": "*"
+                }
+            }
+        },
+        {
+            "type":    "package",
+            "package": {
+                "name":    "components/cookies",
+                "type":    "component",
+                "version": "1.0.1",
+                "source":  {
+                    "url":       "https://github.com/ScottHamper/Cookies.git",
+                    "type":      "git",
+                    "reference": "1.0.1"
+                },
+                "require": {
+                    "robloach/component-installer": "*"
+                },
+                "extra":   {
+                    "name":      "cookies",
+                    "component": {
+                        "scripts": [
+                            "./src/cookies.js"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "type":    "package",
+            "package": {
+                "name":     "sylius/sylius",
+                "type":     "project",
+                "version":  "0.15-dev",
+                "source":   {
+                    "url":       "https://github.com/Strontium-90/Sylius.git",
+                    "type":      "git",
+                    "reference": "resource-form-actions"
+                },
+                "replace":  {
+                    "sylius/addressing":         "self.version",
+                    "sylius/addressing-bundle":  "self.version",
+                    "sylius/api-bundle":         "self.version",
+                    "sylius/archetype":          "self.version",
+                    "sylius/archetype-bundle":   "self.version",
+                    "sylius/attribute":          "self.version",
+                    "sylius/attribute-bundle":   "self.version",
+                    "sylius/cart":               "self.version",
+                    "sylius/cart-bundle":        "self.version",
+                    "sylius/contact":            "self.version",
+                    "sylius/contact-bundle":     "self.version",
+                    "sylius/content":            "self.version",
+                    "sylius/content-bundle":     "self.version",
+                    "sylius/core":               "self.version",
+                    "sylius/core-bundle":        "self.version",
+                    "sylius/currency":           "self.version",
+                    "sylius/currency-bundle":    "self.version",
+                    "sylius/fixtures-bundle":    "self.version",
+                    "sylius/flow-bundle":        "self.version",
+                    "sylius/installer-bundle":   "self.version",
+                    "sylius/inventory":          "self.version",
+                    "sylius/inventory-bundle":   "self.version",
+                    "sylius/locale":             "self.version",
+                    "sylius/locale-bundle":      "self.version",
+                    "sylius/money-bundle":       "self.version",
+                    "sylius/order":              "self.version",
+                    "sylius/order-bundle":       "self.version",
+                    "sylius/payment":            "self.version",
+                    "sylius/payment-bundle":     "self.version",
+                    "sylius/payum-bundle":       "self.version",
+                    "sylius/pricing":            "self.version",
+                    "sylius/pricing-bundle":     "self.version",
+                    "sylius/product":            "self.version",
+                    "sylius/product-bundle":     "self.version",
+                    "sylius/promotion":          "self.version",
+                    "sylius/promotion-bundle":   "self.version",
+                    "sylius/rbac":               "self.version",
+                    "sylius/rbac-bundle":        "self.version",
+                    "sylius/registry":           "self.version",
+                    "sylius/report":             "self.version",
+                    "sylius/report-bundle":      "self.version",
+                    "sylius/resource":           "self.version",
+                    "sylius/resource-bundle":    "self.version",
+                    "sylius/search":             "self.version",
+                    "sylius/search-bundle":      "self.version",
+                    "sylius/sequence":           "self.version",
+                    "sylius/sequence-bundle":    "self.version",
+                    "sylius/settings-bundle":    "self.version",
+                    "sylius/shipping":           "self.version",
+                    "sylius/shipping-bundle":    "self.version",
+                    "sylius/storage":            "self.version",
+                    "sylius/taxation":           "self.version",
+                    "sylius/taxation-bundle":    "self.version",
+                    "sylius/taxonomy":           "self.version",
+                    "sylius/taxonomy-bundle":    "self.version",
+                    "sylius/translation":        "self.version",
+                    "sylius/translation-bundle": "self.version",
+                    "sylius/variation":          "self.version",
+                    "sylius/variation-bundle":   "self.version",
+                    "sylius/web-bundle":         "self.version"
+                },
+                "autoload": {
+                    "psr-0": {
+                        "Sylius\\": "src/"
+                    }
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,7 @@
+---
+  - name: Set permissions for cache dir and log dirs
+    sudo: yes
+    template: src=application.sh dest=/etc/profile.d/app.sh
+
+  - name: Install lessnpm
+    npm: name=less global=yes

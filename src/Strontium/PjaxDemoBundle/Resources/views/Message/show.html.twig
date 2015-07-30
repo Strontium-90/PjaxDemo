@@ -1,0 +1,12 @@
+{% extends pjax_frame() %}
+
+{% block title -%}Show message{%- endblock %}
+
+{% block body %}
+    <dl>
+        <dt>Text</dt>
+        <dd>{{ message.text }}</dd>
+        <dt>Value</dt>
+        <dd>{{ message.value }}</dd>
+    </dl>
+{% endblock %}

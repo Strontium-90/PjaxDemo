@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {% block stylesheets %}{% endblock %}
+
+    <script src="//code.jquery.com/jquery-2.1.0.min.js"></script>
+    <script type="text/javascript" src="{{ asset('components/cookies/src/cookies.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('components/jquery-pjax/jquery.pjax.js') }}"></script>
+
+    {% javascripts filter='?yui_js' output='js/bootstrap.js' '@bootstrap' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    {% javascripts filter='?yui_js' output='js/pjax.js' '@pjax' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+
+    {% stylesheets output='assetic/main.css' '%kernel.root_dir%/../vendor/twbs/bootstrap/less/bootstrap.less' %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="all"/>
+    {% endstylesheets %}
+    {% stylesheets output='css/datepicker.css' '@datepicker' %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="all"/>
+    {% endstylesheets %}
+
+    {% block javascripts %}{% endblock %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+</head>
+<body>
+
+<!-- Static navbar -->
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Project name</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            {{ mopa_bootstrap_menu('main', {'automenu': 'navbar'}) }}
+        </div>
+        <!--/.nav-collapse -->
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="col-md-4">Some static content</div>
+    <div class="col-md-8">
+        <div class="notification-container">
+            {% block flashes %}
+                {% from 'MopaBootstrapBundle::flash.html.twig' import session_flash %}
+                {% if app.session.flashbag.peekAll|length > 0 %}
+                    {{ session_flash(true) }}
+                {% endif %}
+            {% endblock flashes %}
+        </div>
+        <div id="breadcrumb">
+            <ol class="breadcrumb">
+                {% for crumb in  knp_menu_get_breadcrumbs_array('main', 'Messages') %}
+                    <li>
+                        {% if crumb.uri is defined %}
+                            <a href="{{ crumb.uri }}">{{ crumb.label }}</a>
+                        {% else %}
+                            {{ crumb.label }}
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ol>
+        </div>
+        <div class="row" data-pjax-container="main">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+
+</div>
+
+{% include 'StrontiumPjaxBundle:Modal:pjax_modal.html.twig' %}
+</body>
+</html>
+

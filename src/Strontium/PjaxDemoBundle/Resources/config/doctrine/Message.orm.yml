@@ -1,0 +1,16 @@
+Strontium\PjaxDemoBundle\Model\Message:
+    type: entity
+    table: messages
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+            options:
+                unsigned: true
+    fields:
+        text:
+            type: text
+        value:
+            type: integer

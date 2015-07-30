@@ -1,0 +1,5 @@
+strontium_pjax_demo:
+    resource: "@StrontiumPjaxDemoBundle/Resources/config/routing.yml"
+    prefix:   /
+
+
