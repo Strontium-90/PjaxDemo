@@ -1,4 +1,8 @@
 /web/bundles/
+/web/js/
+/web/css/
+/web/components/
+ web/assetic/
 /app/bootstrap.php.cache
 /app/cache/*
 /app/config/parameters.yml
@@ -9,4 +13,3 @@
 /build/
 /vendor/
 /bin/
-/composer.phar
