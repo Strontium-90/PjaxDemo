@@ -8,7 +8,6 @@ server:
     packages:
       - mc
       - npm
-
     timezone: Europe/Moscow
     locale: ru_RU.UTF-8
 vagrant_local:

@@ -4,7 +4,6 @@
     - vars.yml
   roles:
     - server
-    - vagrant_local
     - nginx
     - php
     - composer
