@@ -7,5 +7,4 @@
   template: src=xdebug.ini dest=/etc/php5/mods-available/xdebug.ini
   sudo: yes
   notify:
-    - nginx restart
     - php restart
