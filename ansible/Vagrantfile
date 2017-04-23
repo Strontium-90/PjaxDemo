@@ -44,7 +44,7 @@ Vagrant.configure("2") do |config|
 	# redis
 	sudo ansible-galaxy install geerlingguy.redis
 
-	sudo ansible-galaxy install geerlingguy.mysql
+	#sudo ansible-galaxy install geerlingguy.mysql
   SHELL
 
   # Run Ansible from the Vagrant VM

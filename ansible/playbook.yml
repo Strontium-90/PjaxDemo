@@ -12,6 +12,6 @@
     - php-fpm-pool
     - geerlingguy.composer
     - geerlingguy.git
-    - geerlingguy.mysql
+    - postgresql
     - php
     - app

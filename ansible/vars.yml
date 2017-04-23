@@ -1,5 +1,5 @@
 ---
-servername: bindb.local
+servername: symfony.local
 webroot: /vagrant/web
 application_name: app
 
@@ -18,7 +18,7 @@ nginx_extra_http_options: |
 nginx_remove_default_vhost: true
 nginx_vhosts:
   - listen: "80"
-    server_name: "bindb.local"
+    server_name: "symfony.local"
     root: "/vagrant/web"
     index: "index.php index.html"
     extra_parameters: |
@@ -125,6 +125,83 @@ git_install_path: "/usr"
 git_version: "2.1.0"
 git_install_from_source_force_update: false
 
-mysql_user_home: /root
-mysql_user_name: root
-mysql_user_password: root
+# postgresql
+pg_version: 9.5
+
+pg_admin_user: "postgres"
+pg_default_auth_method: "trust"
+
+pg_dbname: strontium
+pg_extensions:
+  - pg_trgm
+  - hstore
+  - postgres_fdw
+  - pg_stat_statements
+  - pg_buffer_cache
+
+pg_rpm_url: "https://download.postgresql.org/pub/repos/yum/9.5/redhat/rhel-7-x86_64/pgdg-centos95-9.5-2.noarch.rpm"
+
+pg_cfg_configure: no
+pg_service_name: postgresql
+
+pg_cfg_hba_file: "/var/lib/pgsql/{{ pg_version }}/data/pg_hba.conf"
+pg_cfg_file: "/var/lib/pgsql/{{ pg_version }}/data/postgresql.conf"
+
+pg_cfg_srv_listen_addresses: "*"
+pg_cfg_srv_listen_port: "5432"
+
+pg_cfg_pg_hba_default:
+  - type: 'local'
+    database: 'all'
+    user: 'postgres'
+    method: 'trust'
+    comment: ''
+    address: ''
+  - type: 'local'
+    database: 'all'
+    user: 'all'
+    method: 'trust'
+    comment: ''
+    address: ''
+  - type: 'host'
+    database: 'all'
+    user: 'all'
+    address: '127.0.0.1/32'
+    method: 'trust'
+    comment: ''
+  - type: 'host'
+    database: 'all'
+    user: 'all'
+    address: '::1/128'
+    method: 'trust'
+    comment: ''
+  - type: 'host'
+    database: 'all'
+    user: 'postgres'
+    address: '113.0.0.1/32'
+    method: 'trust'
+    comment: ''
+  - type: 'host'
+    database: 'all'
+    user: 'strontium'
+    method: 'trust'
+    address: '127.0.0.1/32'
+    comment: 'Allow from host machine'
+  - type: 'host'
+    database: 'all'
+    user: 'strontium'
+    method: 'trust'
+    address: '192.168.33.1/32'
+    comment: 'Allow from host machine'
+  - type: 'host'
+    database: 'all'
+    user: 'postgres'
+    method: 'trust'
+    address: '192.168.33.1/32'
+    comment: 'Allow from host machine'
+
+pg_database:
+  name: "strontium"
+pg_users:
+  user: "strontium"
+  password: ''

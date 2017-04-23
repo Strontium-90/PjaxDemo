@@ -1,0 +1,3 @@
+strontium_seven_vetr_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: StrontiumSevenVetrBundle:Default:index }

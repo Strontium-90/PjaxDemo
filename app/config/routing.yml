@@ -1,3 +1,7 @@
+strontium_seven_vetr:
+    resource: "@StrontiumSevenVetrBundle/Resources/config/routing.yml"
+    prefix:   /
+
 strontium_pjax_demo:
     resource: "@StrontiumPjaxDemoBundle/Resources/config/routing.yml"
     prefix:   /

@@ -1,7 +1,6 @@
 <?php
 
 use Strontium\SymfonyVagrant\Kernel\VagrantAwareKernel;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
 class AppKernel extends VagrantAwareKernel
@@ -26,6 +25,7 @@ class AppKernel extends VagrantAwareKernel
             new Mopa\Bundle\BootstrapBundle\MopaBootstrapBundle(),
             new Strontium\PjaxBundle\StrontiumPjaxBundle(),
             new Strontium\PjaxDemoBundle\StrontiumPjaxDemoBundle(),
+            new Strontium\SevenVetrBundle\StrontiumSevenVetrBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

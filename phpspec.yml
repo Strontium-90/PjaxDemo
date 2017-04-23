@@ -1,0 +1,6 @@
+suites:
+    StrontiumSevenVetrBundle:
+        namespace: Strontium\SevenVetrBundle
+        psr4_prefix: Strontium\SevenVetrBundle
+        spec_path: src/Strontium/SevenVetrBundle
+        src_path: src/Strontium/SevenVetrBundle
