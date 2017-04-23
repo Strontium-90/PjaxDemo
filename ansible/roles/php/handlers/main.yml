@@ -1,7 +1,0 @@
----
-  - name: php restart
-    sudo: yes
-    service: name=php5-fpm state=restarted
-    notify:
-      - nginx restart
-      #- apache restart

@@ -1,9 +1,0 @@
-- name: Install composer
-  sudo: yes
-  get_url: url=https://getcomposer.org/composer.phar
-         dest=/usr/local/bin/composer
-         validate_certs=no
-
-- name: Fix the permissions
-  sudo: yes
-  file: path=/usr/local/bin/composer mode=755

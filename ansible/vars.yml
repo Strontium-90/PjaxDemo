@@ -1,52 +1,207 @@
 ---
-servername: symfony.local
+servername: bindb.local
 webroot: /vagrant/web
 application_name: app
 
-server:
-    install: '1'
-    packages:
-      - mc
-      - npm
-    timezone: Europe/Moscow
-    locale: ru_RU.UTF-8
-vagrant_local:
-    install: '1'
-    vm:
-        base_box: trusty64
-        hostname: default
-        ip: 192.168.33.99
-        memory: '512'
-        sharedfolder: ./
-        enableWindows: '1'
-        useVagrantCloud: '1'
-        syncType: nfs
-apache:
-    install: '1'
-    docroot: "{{ webroot }}"
-    servername: "{{ servername }}"
-nginx:
-    install: '1'
-    docroot: "{{ webroot }}"
-    servername: "{{ servername }}"
-php:
-    install: '1'
-    packages:
-        - php5-cli
-        - php5-intl
-        - php5-mcrypt
-        - php5-curl
-        - php5-gd
-        - php5-mysql
-        - php5-dev
-        - php5-imagick
-        - php5-xsl
-        - php-pear
-        - php-soap
-        - php-http
-        - php-apc
-    peclpackages: [APC, APCu]
-    max_execution_time: 30000
-    memory_limit: 512M
-    upload_max_filesize: 32M
+# ntp
+ntp_enabled: true
+ntp_timezone: Europe/Moscow
 
+# nginx
+nginx_user: "vagrant"
+nginx_sendfile: "Off" # see https://www.vagrantup.com/docs/synced-folders/virtualbox.html
+nginx_tcp_nodelay: "On"
+nginx_tcp_nopush: "Off"
+nginx_extra_http_options: |
+  gzip	on;
+
+nginx_remove_default_vhost: true
+nginx_vhosts:
+  - listen: "80"
+    server_name: "bindb.local"
+    root: "/vagrant/web"
+    index: "index.php index.html"
+    extra_parameters: |
+      charset	utf8;
+        location / {
+          try_files $uri @dev;
+        }
+        location @app {
+          rewrite ^(.*)$ /app.php/$1 last;
+        }
+        location @dev {
+          rewrite ^(.*)$ /app_dev.php/$1 last;
+        }
+        location ~ ^/(app|app_dev|app_devx|config)\.php(/|$) {
+          fastcgi_pass unix:/var/run/php-fpm/php-fpm.sock;
+          fastcgi_split_path_info ^(.+\.php)(/.*)$;
+          include fastcgi_params;
+          fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+          fastcgi_param DOCUMENT_ROOT $realpath_root;
+          fastcgi_param HTTPS off;
+          fastcgi_param SYMFONY_ENV dev;
+          fastcgi_param VAGRANT VAGRANT;
+        }
+
+# php
+php_enablerepo: "epel"
+php_source_version: 7.0
+php_install_recommends: yes
+php_enable_php_fpm: true
+php_fpm_listen: "/var/run/php-fpm/php-fpm.sock"
+php_fpm_listen_allowed_clients: "127.0.0.1"
+php_fpm_pm_max_children: 50
+php_fpm_pm_start_servers: 5
+php_fpm_pm_min_spare_servers: 5
+php_fpm_pm_max_spare_servers: 35
+php_fpm_pool_user: "vagrant"
+php_fpm_pool_group: "vagrant"
+
+php_webserver_daemon: "nginx"
+
+php_opcache_enable: false
+php_enable_apc: false
+
+php_expose_php: "On"
+php_memory_limit: "4096M"
+php_max_execution_time: "30"
+php_max_input_time: "60"
+php_max_input_vars: "5000"
+php_realpath_cache_size: "4096k"
+php_upload_max_filesize: "64M"
+php_post_max_size: "32M"
+php_date_timezone: "{{ ntp_timezone }}"
+php_allow_url_fopen: "On"
+
+php_sendmail_path: "/usr/sbin/sendmail -t -i"
+php_output_buffering: "Off"
+php_short_open_tag: "On"
+
+php_session_cookie_lifetime: 0
+php_session_gc_probability: 1
+php_session_gc_divisor: 1000
+php_session_gc_maxlifetime: 1440
+php_session_save_handler: files
+php_session_save_path: ''
+
+php_error_reporting: "E_ALL"
+php_display_errors: "On"
+php_display_startup_errors: "Off"
+
+php_packages:
+  - php70w-fpm
+  - php70w-cli
+  - php70w-common
+  - php70w-devel
+  - php70w-gd
+  - php70w-mbstring
+  - php70w-pdo
+  - php70w-xml
+  - php70w-intl
+  - php70w-mcrypt
+  - php70w-pecl-xdebug
+  - php70w-bcmath
+  - php70w-pecl-redis
+  - php70w-pgsql
+ 
+ # php-fpm pool
+php_owner: vagrant
+php_group: vagrant
+
+# composer
+composer_path: /usr/local/bin/composer
+composer_keep_updated: false
+composer_version: '1.0.0'
+composer_github_oauth_token: ''
+
+
+# git
+workspace: /root
+git_enablerepo: ""
+git_packages:
+  - git
+git_install_from_source: false
+git_install_path: "/usr"
+git_version: "2.1.0"
+git_install_from_source_force_update: false
+
+# postgresql
+pg_version: 9.5
+
+pg_admin_user: "postgres"
+pg_default_auth_method: "trust"
+
+pg_dbname: smartmoney
+pg_extensions:
+  - pg_trgm
+  - hstore
+  - postgres_fdw
+  - pg_stat_statements
+  - pg_buffer_cache
+
+pg_rpm_url: "https://download.postgresql.org/pub/repos/yum/9.5/redhat/rhel-7-x86_64/pgdg-centos95-9.5-2.noarch.rpm"
+
+pg_cfg_configure: no
+pg_service_name: postgresql
+
+pg_cfg_hba_file: "/var/lib/pgsql/{{ pg_version }}/data/pg_hba.conf"
+pg_cfg_file: "/var/lib/pgsql/{{ pg_version }}/data/postgresql.conf"
+
+pg_cfg_srv_listen_addresses: "*"
+pg_cfg_srv_listen_port: "5432"
+
+pg_cfg_pg_hba_default:
+  - type: 'local'
+    database: 'all'
+    user: 'postgres'
+    method: 'trust'
+    comment: ''
+    address: ''
+  - type: 'local'
+    database: 'all'
+    user: 'all'
+    method: 'trust'
+    comment: ''
+    address: ''
+  - type: 'host'
+    database: 'all'
+    user: 'all'
+    address: '127.0.0.1/32'
+    method: 'trust'
+    comment: ''
+  - type: 'host'
+    database: 'all'
+    user: 'all'
+    address: '::1/128'
+    method: 'trust'
+    comment: ''
+  - type: 'host'
+    database: 'all'
+    user: 'postgres'
+    address: '113.0.0.1/32'
+    method: 'trust'
+    comment: ''
+  - type: 'host'
+    database: 'all'
+    user: 'smartmoney'
+    method: 'trust'
+    address: '127.0.0.1/32'
+    comment: 'Allow from host machine'
+  - type: 'host'
+    database: 'all'
+    user: 'smartmoney'
+    method: 'trust'
+    address: '192.168.33.1/32'
+    comment: 'Allow from host machine'
+  - type: 'host'
+    database: 'all'
+    user: 'postgres'
+    method: 'trust'
+    address: '192.168.33.1/32'
+    comment: 'Allow from host machine'
+
+pg_database:
+  name: "smartmoney"
+pg_users:
+  user: "smartmoney"
+  password: ''

@@ -1,11 +1,17 @@
 ---
-- hosts: vagrant
+- hosts: symfony
+  become: yes
+  become_method: sudo
   vars_files:
     - vars.yml
   roles:
     - server
-    - nginx
+    - geerlingguy.ntp
+    - geerlingguy.nginx
+    - geerlingguy.php
+    - php-fpm-pool
+    - geerlingguy.composer
+    - geerlingguy.git
+    - postgresql
     - php
-    - composer
-    - java
     - app
