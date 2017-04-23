@@ -108,7 +108,7 @@
                     "email": "schmittjoh@gmail.com"
                 }
             ],
-            "description": "Docblock Annotations Parser",
+            "description": "Docblock Annotations TagParser",
             "homepage": "http://www.doctrine-project.org",
             "keywords": [
                 "annotations",

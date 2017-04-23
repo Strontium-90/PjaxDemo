@@ -3,16 +3,16 @@
 namespace spec\Strontium\SevenVetrBundle;
 
 use PhpSpec\ObjectBehavior;
-use Strontium\SevenVetrBundle\Parser;
+use Strontium\SevenVetrBundle\TagParser;
 
 /**
- * @mixin Parser
+ * @mixin TagParser
  */
-class ParserSpec extends ObjectBehavior
+class TagParserSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Strontium\SevenVetrBundle\Parser');
+        $this->shouldHaveType('Strontium\SevenVetrBundle\TagParser');
     }
 
     function it_should_parse_this_text()
