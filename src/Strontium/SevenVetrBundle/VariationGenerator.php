@@ -20,8 +20,8 @@ class VariationGenerator
         $variations = [];
         foreach ($source as $i => $row) {
             foreach ($row as $j => $var) {
-                foreach ($this->getVariationIndexesForRow($i) as $k) {
-                    if (!isset($variations[$k])){
+                foreach ($this->getVariationIndexesForRow($source, $i) as $k) {
+                    if (!isset($variations[$k])) {
                         $variations[$k] = [];
                     }
                     $variations[$k][$i] = $var;
@@ -32,8 +32,15 @@ class VariationGenerator
         return $variations;
     }
 
-    public function getVariationIndexesForRow($i)
+    /**
+     * @param array $source
+     * @param       $i
+     *
+     * @return array
+     */
+    public function getVariationIndexesForRow(array $source, $i)
     {
-
+        //генерим массив в котором будет встречаться данный элемент в массиве вариаций
+        return [];
     }
 }
