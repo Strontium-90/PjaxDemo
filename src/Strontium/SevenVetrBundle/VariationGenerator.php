@@ -20,10 +20,20 @@ class VariationGenerator
         $variations = [];
         foreach ($source as $i => $row) {
             foreach ($row as $j => $var) {
-                $variations[][$i] = $var;
+                foreach ($this->getVariationIndexesForRow($i) as $k) {
+                    if (!isset($variations[$k])){
+                        $variations[$k] = [];
+                    }
+                    $variations[$k][$i] = $var;
+                }
             }
         }
 
         return $variations;
+    }
+
+    public function getVariationIndexesForRow($i)
+    {
+
     }
 }
